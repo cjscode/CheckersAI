@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Checkers AI</title>
+    <style>
+        th {
+            width: 12.5%;
+            height: 12.5%;
+            border: 0;
+            padding: 0;
+            margin: 0;
+            border: none;
+        }
+        table {
+            width: 750px;
+            height: 750px;
+            border: 1px black solid;
+            margin: 0;
+            padding: 0;
+            border-spacing: 0;
+        }
+        .b {
+            background-color: #404040;
+        }
+        .w {
+            background-color: rgb(225, 225, 225);
+        }
+        head, body {
+            width: 100%;
+            height: 100%;
+            margin: 0;
+            padding: 0;
+        }
+        img {
+            width: 100%;
+            height: 100%;
+        }
+    </style>
+</head>
+<body>
+    <table id="table">
+        <tbody>
+            <tr>
+                <th id="spot1"><img id="img1"></th>
+                <th id="spot2"><img id="img2"></th>
+                <th id="spot3"><img id="img3"></th>
+                <th id="spot4"><img id="img4"></th>
+                <th id="spot5"><img id="img5"></th>
+                <th id="spot6"><img id="img6"></th>
+                <th id="spot7"><img id="img7"></th>
+                <th id="spot8"><img id="img8"></th>
+            </tr>
+            <tr>
+                <th id="spot9"><img id="img9"></th>
+                <th id="spot10"><img id="img10"></th>
+                <th id="spot11"><img id="img11"></th>
+                <th id="spot12"><img id="img12"></th>
+                <th id="spot13"><img id="img13"></th>
+                <th id="spot14"><img id="img14"></th>
+                <th id="spot15"><img id="img15"></th>
+                <th id="spot16"><img id="img16"></th>
+            </tr>
+            <tr>
+                <th id="spot17"><img id="img17"></th>
+                <th id="spot18"><img id="img18"></th>
+                <th id="spot19"><img id="img19"></th>
+                <th id="spot20"><img id="img20"></th>
+                <th id="spot21"><img id="img21"></th>
+                <th id="spot22"><img id="img22"></th>
+                <th id="spot23"><img id="img23"></th>
+                <th id="spot24"><img id="img24"></th>
+            </tr>
+            <tr>
+                <th id="spot25"><img id="img25"></th>
+                <th id="spot26"><img id="img26"></th>
+                <th id="spot27"><img id="img27"></th>
+                <th id="spot28"><img id="img28"></th>
+                <th id="spot29"><img id="img29"></th>
+                <th id="spot30"><img id="img30"></th>
+                <th id="spot31"><img id="img31"></th>
+                <th id="spot32"><img id="img32"></th>
+            </tr>
+            <tr>
+                <th id="spot33"><img id="img33"></th>
+                <th id="spot34"><img id="img34"></th>
+                <th id="spot35"><img id="img35"></th>
+                <th id="spot36"><img id="img36"></th>
+                <th id="spot37"><img id="img37"></th>
+                <th id="spot38"><img id="img38"></th>
+                <th id="spot39"><img id="img39"></th>
+                <th id="spot40"><img id="img40"></th>
+            </tr>
+            <tr>
+                <th id="spot41"><img id="img41"></th>
+                <th id="spot42"><img id="img42"></th>
+                <th id="spot43"><img id="img43"></th>
+                <th id="spot44"><img id="img44"></th>
+                <th id="spot45"><img id="img45"></th>
+                <th id="spot46"><img id="img46"></th>
+                <th id="spot47"><img id="img47"></th>
+                <th id="spot48"><img id="img48"></th>
+            </tr>
+            <tr>
+                <th id="spot49"><img id="img49"></th>
+                <th id="spot50"><img id="img50"></th>
+                <th id="spot51"><img id="img51"></th>
+                <th id="spot52"><img id="img52"></th>
+                <th id="spot53"><img id="img53"></th>
+                <th id="spot54"><img id="img54"></th>
+                <th id="spot55"><img id="img55"></th>
+                <th id="spot56"><img id="img56"></th>
+            </tr>
+            <tr>
+                <th id="spot57"><img id="img57"></th>
+                <th id="spot58"><img id="img58"></th>
+                <th id="spot59"><img id="img59"></th>
+                <th id="spot60"><img id="img60"></th>
+                <th id="spot61"><img id="img61"></th>
+                <th id="spot62"><img id="img62"></th>
+                <th id="spot63"><img id="img63"></th>
+                <th id="spot64"><img id="img64"></th>
+            </tr>
+            </tr>
+        </tbody>
+    </table>
+    <script>
+        document.getElementById("table").style.height = document.getElementById("table").style.width
+        let board = ["b0","none","b0","none","b0","none","b0","none","none","b0","none","b0","none","b0","none","b0","b0","none","b0","none","b0","none","b0","none","none","none","none","none","none","none","none","none","none","none","none","none","none","none","none","none","none","w0","none","w0","none","w0","none","w0","w0","none","w0","none","w0","none","w0","none","none","w0","none","w0","none","w0","none","w0"]
+        let numm = 1
+        let avaiblemoves = []
+        for (let index = 1; index < 65; index++) {
+            if (numm % 2 == 1) {
+                document.getElementById("spot"+index).classList.add("b")
+                numm += 1
+            } else {
+                document.getElementById("spot"+index).classList.add("w")
+                numm += 1
+            }
+            if (index % 8 == 0) {
+                numm += 1
+            }
+        }
+        function updateboard () {
+            for (let setupimg = 1; setupimg <= 64; setupimg++) {
+                document.getElementById("img"+setupimg).src = "Assets/"+board[setupimg-1]+".png"
+                if (board[setupimg-1] == "none") {
+                    document.getElementById("img"+setupimg).style.opacity = 0
+                } else {
+                    document.getElementById("img"+setupimg).style.opacity = 1
+                }
+                document.getElementById("spot"+setupimg).onclick = function () {peiceclick(setupimg)}
+                if (avaiblemoves[setupimg-1]) {
+                    document.getElementById("spot"+setupimg).style.backgroundColor = getbgcolor(setupimg, true)
+                } else {
+                    document.getElementById("spot"+setupimg).style.backgroundColor = getbgcolor(setupimg, false)
+                }
+            }
+        }
+        updateboard()
+        let selectedpeice = "none"
+        function peiceclick (p) {
+            p = parseInt(p)
+            if (!(avaiblemoves.includes(true))) {
+                resetmoves()
+                if (!(board[p-1] == "none")) {
+                    selectedpeice = p
+                    findmovesfor(p)
+                }
+            } else {
+                if (avaiblemoves[p-1]) {
+                    movepeice(p-1, selectedpeice-1)
+                }
+                console.log(avaiblemoves[p-1])
+                resetmoves()
+            }
+            updateboard()
+        }
+        function movepeice (p, t) {
+            console.log("from:"+p+"to:"+t)
+            board[p] = board[t]
+            board[t] = "none"
+        }
+        function findmovesfor (p) {
+            resetmoves()
+            if (board[p-1].charAt(0) == "w") {
+                if (board[p-10]=="none") {
+                    avaiblemoves[p-10] = true
+                } else if (!(board[p-10].charAt(0) == board[p].charAt(0)) && (board[p-19] == "none")) {
+                    avaiblemoves[p-19] = true
+                }
+                if (board[p-8]=="none") {
+                    avaiblemoves[p-8] = true
+                } else if (!(board[p-8].charAt(0) == board[p].charAt(0)) && (board[p-15] == "none")) {
+                    avaiblemoves[p-15] = true
+                }
+            } else {
+                if (board[p+8]=="none") {
+                    avaiblemoves[p+8] = true
+                } else if (!(board[p+8].charAt(0) == board[p].charAt(0)) && (board[p+17] == "none")) {
+                    avaiblemoves[p+17] = true
+                }
+                if (board[p+6]=="none") {
+                    avaiblemoves[p+6] = true
+                } else if (!(board[p+6].charAt(0) == board[p].charAt(0)) && (board[p+13] == "none")) {
+                    avaiblemoves[p+13] = true
+                }
+            }
+        }
+        function resetmoves () {
+            avaiblemoves = []
+            for (let index = 1; index <= 64; index++) {
+                avaiblemoves.push(false)
+            }
+        }
+        function getbgcolor (s, a) {
+            if (a) {
+                if (document.getElementById("spot"+s).getAttribute("class") == "b") {
+                    return "darkgreen"
+                } else {
+                    return "lightgreen"
+                }
+            } else {
+                if (document.getElementById("spot"+s).getAttribute("class") == "b") {
+                    return "#404040"
+                } else {
+                    return "white"
+                }
+            }
+        }
+        function makerndmmove (c) {
+            let peicewhite = []
+            let peiceblack = []
+            for (let index = 0; index < board.length; index++) {
+                if (board[index].charAt(0) == "w") {
+                    peicewhite.push(index)
+                } else {
+                    peiceblack.push(index)
+                }
+            }
+            if (c == "w") {
+                findmovesfor(peicewhite[Math.floor(Math.random()*peicewhite.length)]+1)
+            } else {
+                findmovesfor(peiceblack[Math.floor(Math.random()*peiceblack.length)]+1)
+            }
+        }
+        setInterval(updateboard, 50)
+        makerndmmove("w")
+    </script>
+</body>
+</html>
