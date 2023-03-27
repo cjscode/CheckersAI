@@ -7,8 +7,8 @@
     <title>Checkers AI</title>
     <style>
         th {
-            width: 12.5%;
-            height: 12.5%;
+            width: 93.75px;
+            height: 93.75px;
             border: 0;
             padding: 0;
             margin: 0;
@@ -35,8 +35,8 @@
             padding: 0;
         }
         img {
-            width: 100%;
-            height: 100%;
+            width: 93.75px;
+            height: 93.75px;
         }
     </style>
 </head>
@@ -143,6 +143,7 @@
                 numm += 1
             }
         }
+        //none
         function updateboard () {
             for (let setupimg = 1; setupimg <= 64; setupimg++) {
                 document.getElementById("img"+setupimg).src = "Assets/"+board[setupimg-1]+".png"
@@ -161,6 +162,7 @@
         }
         updateboard()
         let selectedpeice = "none"
+        //p integer
         function peiceclick (p) {
             p = parseInt(p)
             if (!(avaiblemoves.includes(true))) {
@@ -178,43 +180,71 @@
             }
             updateboard()
         }
+        //p index t index
         function movepeice (p, t) {
-            console.log("from:"+p+"to:"+t)
+            /* WHY ISNT IT WORKING PLS HELP
+            p -= 1
+            t -= 1
+            if (!(p-10==t || p-8==t || p+8==t || p+6==t)) {
+                alert("jump")
+                if (p-19==t) {
+                    alert("p-19")
+                    board[p-10] = "none"
+                } else if (p-14==t) {
+                    alert("p-14")
+                    board[p-8] = "none"
+                } else if (p+17==t) {
+                    alert("p+17")
+                    board[p+8] = "none"
+                } else if (p+13==t) {
+                    alert("p+13")
+                    board[p+6] = "none"
+                } else {
+                    alert("err")
+                    console.log("err")
+                }
+            }
+            p += 1
+            t += 1
+            */
             board[p] = board[t]
             board[t] = "none"
         }
+        //p integer
         function findmovesfor (p) {
             resetmoves()
             if (board[p-1].charAt(0) == "w") {
-                if (board[p-10]=="none") {
+                if (board[p-10]=="none" && checkx(p-1, p-10) == "left") {
                     avaiblemoves[p-10] = true
-                } else if (!(board[p-10].charAt(0) == board[p].charAt(0)) && (board[p-19] == "none")) {
+                } else if (!(board[p-10].charAt(0) == board[p-1].charAt(0)) && (board[p-19] == "none") && checkx(p-1, p-19) == "left") {
                     avaiblemoves[p-19] = true
                 }
-                if (board[p-8]=="none") {
+                if (board[p-8]=="none" && checkx(p-1, p-8) == "right") {
                     avaiblemoves[p-8] = true
-                } else if (!(board[p-8].charAt(0) == board[p].charAt(0)) && (board[p-15] == "none")) {
+                } else if (!(board[p-8].charAt(0) == board[p-1].charAt(0)) && (board[p-15] == "none") && checkx(p-1, p-15) == "right") {
                     avaiblemoves[p-15] = true
                 }
             } else {
-                if (board[p+8]=="none") {
+                if (board[p+8]=="none" && checkx(p-1, p+8) == "right") {
                     avaiblemoves[p+8] = true
-                } else if (!(board[p+8].charAt(0) == board[p].charAt(0)) && (board[p+17] == "none")) {
+                } else if (!(board[p+8].charAt(0) == board[p-1].charAt(0)) && (board[p+17] == "none") && checkx(p-1, p+17) == "right") {
                     avaiblemoves[p+17] = true
                 }
-                if (board[p+6]=="none") {
+                if (board[p+6]=="none" && checkx(p-1, p+6) == "left") {
                     avaiblemoves[p+6] = true
-                } else if (!(board[p+6].charAt(0) == board[p].charAt(0)) && (board[p+13] == "none")) {
+                } else if (!(board[p+6].charAt(0) == board[p-1].charAt(0)) && (board[p+13] == "none") && checkx(p-1, p+13) == "left") {
                     avaiblemoves[p+13] = true
                 }
             }
         }
+        //none
         function resetmoves () {
             avaiblemoves = []
             for (let index = 1; index <= 64; index++) {
                 avaiblemoves.push(false)
             }
         }
+        //s integer a true/false
         function getbgcolor (s, a) {
             if (a) {
                 if (document.getElementById("spot"+s).getAttribute("class") == "b") {
@@ -230,24 +260,76 @@
                 }
             }
         }
+        //c text
         function makerndmmove (c) {
             let peicewhite = []
             let peiceblack = []
             for (let index = 0; index < board.length; index++) {
                 if (board[index].charAt(0) == "w") {
                     peicewhite.push(index)
-                } else {
+                } else if (board[index].charAt(0) == "b") {
                     peiceblack.push(index)
                 }
             }
+            let randm
             if (c == "w") {
-                findmovesfor(peicewhite[Math.floor(Math.random()*peicewhite.length)]+1)
+                randm = peicewhite[Math.floor(Math.random()*peicewhite.length)]
+                findmovesfor(randm+1)
+                selectedpeice = randm+1
             } else {
-                findmovesfor(peiceblack[Math.floor(Math.random()*peiceblack.length)]+1)
+                randm = peiceblack[Math.floor(Math.random()*peiceblack.length)]
+                findmovesfor(randm+1)
+                selectedpeice = randm+1
             }
+            randm = 0
+            let whitemoves = []
+            let blackmoves = []
+            for (let index = 0; index < avaiblemoves.length; index++) {
+                if (avaiblemoves[index]) {
+                    if (c == "w") {
+                        whitemoves.push(index)
+                    } else {
+                        blackmoves.push(index)
+                    }
+                }
+            }
+            if (whitemoves.length == 0 && c == "w") {
+                makerndmmove(c)
+                return "ERR"
+            } else if (blackmoves.length == 0 && c == "b") {
+                makerndmmove(c)
+                return "ERR"
+            }
+            if (c == "w") {
+                randm = whitemoves[Math.floor(Math.random()*whitemoves.length)]
+                movepeice(randm, selectedpeice-1)
+            } else {
+                randm = blackmoves[Math.floor(Math.random()*blackmoves.length)]
+                movepeice(randm, selectedpeice-1)
+            }
+            resetmoves()
         }
         setInterval(updateboard, 50)
-        makerndmmove("w")
+        for (let indx = 0; indx < 10000; indx++) {
+            makerndmmove("w")
+            makerndmmove("b")
+        }
+        //p index
+        function calcxy (p) {
+            let x = (p % 8)+1
+            let y = Math.floor(p/8)+1
+            return ""+x+y
+        }
+        //x index xi index
+        function checkx (x, xi) {
+            x = calcxy(x)
+            xi = calcxy(xi)
+            if (x.charAt(0) > xi.charAt(0)) {
+                return "left"
+            } else {
+                return "right"
+            }
+        }
     </script>
 </body>
 </html>
