@@ -128,7 +128,7 @@
     </table>
     <script>
         document.getElementById("table").style.height = document.getElementById("table").style.width
-        let board = ["b0","none","b0","none","b0","none","b0","none","none","b0","none","b0","none","b0","none","b0","b0","none","b0","none","b0","none","b0","none","none","none","none","none","none","none","none","none","none","none","none","none","none","none","none","none","none","w0","none","w0","none","w0","none","w0","w0","none","w0","none","w0","none","w0","none","none","w0","none","w0","none","w0","none","w0"]
+        let board = ["b1","none","b0","none","b0","none","b0","none","none","b0","none","b0","none","b0","none","b0","b0","none","b0","none","b0","none","b0","none","none","none","none","none","none","none","none","none","none","none","none","none","none","none","none","none","none","w0","none","w0","none","w0","none","w0","w0","none","w0","none","w0","none","w0","none","none","w0","none","w0","none","w0","none","w0"]
         let numm = 1
         let avaiblemoves = []
         for (let index = 1; index < 65; index++) {
@@ -182,38 +182,30 @@
         }
         //p index t index
         function movepeice (p, t) {
-            /* WHY ISNT IT WORKING PLS HELP
+            //t start p end
             p -= 1
             t -= 1
-            if (!(p-10==t || p-8==t || p+8==t || p+6==t)) {
-                alert("jump")
-                if (p-19==t) {
-                    alert("p-19")
-                    board[p-10] = "none"
-                } else if (p-14==t) {
-                    alert("p-14")
-                    board[p-8] = "none"
-                } else if (p+17==t) {
-                    alert("p+17")
-                    board[p+8] = "none"
-                } else if (p+13==t) {
-                    alert("p+13")
-                    board[p+6] = "none"
-                } else {
-                    alert("err")
-                    console.log("err")
-                }
+            if (p+18==t) {
+                board[p+10] = "none"
+            } else if (p+14==t) {
+                board[p+8] = "none"
+            } else if (p-18==t) {
+                board[p-8] = "none"
+            } else if (p-14==t) {
+                board[p-6] = "none"
+            } else {
+                console.log("err")
             }
             p += 1
             t += 1
-            */
             board[p] = board[t]
             board[t] = "none"
         }
         //p integer
+        findmovesfor(1)
         function findmovesfor (p) {
             resetmoves()
-            if (board[p-1].charAt(0) == "w") {
+            if (board[p-1].charAt(0) == "w" || board[p-1].charAt(1) == "1") {
                 if (board[p-10]=="none" && checkx(p-1, p-10) == "left") {
                     avaiblemoves[p-10] = true
                 } else if (!(board[p-10].charAt(0) == board[p-1].charAt(0)) && (board[p-19] == "none") && checkx(p-1, p-19) == "left") {
@@ -224,7 +216,8 @@
                 } else if (!(board[p-8].charAt(0) == board[p-1].charAt(0)) && (board[p-15] == "none") && checkx(p-1, p-15) == "right") {
                     avaiblemoves[p-15] = true
                 }
-            } else {
+            }
+            if (board[p-1].charAt(0) == "b" || board[p-1].charAt(1) == "1") {
                 if (board[p+8]=="none" && checkx(p-1, p+8) == "right") {
                     avaiblemoves[p+8] = true
                 } else if (!(board[p+8].charAt(0) == board[p-1].charAt(0)) && (board[p+17] == "none") && checkx(p-1, p+17) == "right") {
@@ -310,7 +303,8 @@
             resetmoves()
         }
         setInterval(updateboard, 50)
-        for (let indx = 0; indx < 10000; indx++) {
+        setInterval
+        for (let index = 0; index < 0; index++) {
             makerndmmove("w")
             makerndmmove("b")
         }
