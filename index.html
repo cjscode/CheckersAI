@@ -21,6 +21,7 @@
             margin: 0;
             padding: 0;
             border-spacing: 0;
+            display: inline-block;
         }
         .b {
             background-color: #404040;
@@ -37,6 +38,12 @@
         img {
             width: 93.75px;
             height: 93.75px;
+        }
+        button {
+            background-color: darkgrey;
+            border-radius: 5px;
+            color: black;
+            font-size: 35px;
         }
     </style>
 </head>
@@ -126,9 +133,10 @@
             </tr>
         </tbody>
     </table>
+    <button onclick="makerandommoves()">Random</button>
     <script>
         document.getElementById("table").style.height = document.getElementById("table").style.width
-        let board = ["b1","none","b0","none","b0","none","b0","none","none","b0","none","b0","none","b0","none","b0","b0","none","b0","none","b0","none","b0","none","none","none","none","none","none","none","none","none","none","none","none","none","none","none","none","none","none","w0","none","w0","none","w0","none","w0","w0","none","w0","none","w0","none","w0","none","none","w0","none","w0","none","w0","none","w0"]
+        let board = ["b0","none","b0","none","b0","none","b0","none","none","b0","none","b0","none","b0","none","b0","b0","none","b0","none","b0","none","b0","none","none","none","none","none","none","none","none","none","none","none","none","none","none","none","none","none","none","w0","none","w0","none","w0","none","w0","w0","none","w0","none","w0","none","w0","none","none","w0","none","w0","none","w0","none","w0"]
         let numm = 1
         let avaiblemoves = []
         for (let index = 1; index < 65; index++) {
@@ -200,6 +208,7 @@
             t += 1
             board[p] = board[t]
             board[t] = "none"
+            dologic()
         }
         //p integer
         findmovesfor(1)
@@ -254,7 +263,10 @@
             }
         }
         //c text
+        let moveto
+        let movefrom
         function makerndmmove (c) {
+            //c = "w"
             let peicewhite = []
             let peiceblack = []
             for (let index = 0; index < board.length; index++) {
@@ -286,27 +298,67 @@
                     }
                 }
             }
-            if (whitemoves.length == 0 && c == "w") {
-                makerndmmove(c)
+            if (/*!(whitemoves.includes(true))*/whitemoves.length == 0 && c == "w") {
+                makerndmmove("w")
                 return "ERR"
-            } else if (blackmoves.length == 0 && c == "b") {
-                makerndmmove(c)
+            } else if (/*!(blackmoves.includes(true))*/blackmoves.length == 0 && c == "b") {
+                makerndmmove("b")
                 return "ERR"
             }
             if (c == "w") {
                 randm = whitemoves[Math.floor(Math.random()*whitemoves.length)]
-                movepeice(randm, selectedpeice-1)
+                moveto = randm
+                movefrom = selectedpeice-1
             } else {
                 randm = blackmoves[Math.floor(Math.random()*blackmoves.length)]
-                movepeice(randm, selectedpeice-1)
+                moveto = randm
+                movefrom = selectedpeice-1
             }
+            movepeice(moveto, movefrom)
             resetmoves()
         }
-        setInterval(updateboard, 50)
-        setInterval
-        for (let index = 0; index < 0; index++) {
+        setInterval(updateboard, 5)
+        setInterval(makerandommoves, 100)
+        for (let index = 0; index < 50; index++) {
+            makerandommoves()
+        }
+        let winner = ""
+        function dologic () {
+            for (let index = 0; index < 8; index++) {
+                if (board[index].charAt(0) == "w") {
+                    board[index] = "w1"
+                }
+            }
+            for (let index = 56; index < 64; index++) {
+                if (board[index].charAt(0) == "b") {
+                    board[index] = "b1"
+                }
+            }/*
+            let foundb = false
+            for (let index = 0; index < board.length, foundb; index++) {
+                if (board[index].charAt(0) == "b") {
+                    foundb = true
+                }
+            }
+            if (!(foundb)) {
+                winner = "w"
+            }
+            let foundw = false
+            for (let index = 0; index < board.length, foundw; index++) {
+                if (board[index].charAt(0) == "w") {
+                    foundw = true
+                }
+            }
+            if (!(foundw)) {
+                winner = "b"
+            }
+            if (winner == "") {
+                alert(winner)
+            }*/
+        }
+        function makerandommoves () {
             makerndmmove("w")
-            makerndmmove("b")
+            makerndmmove("b") 
         }
         //p index
         function calcxy (p) {
@@ -323,6 +375,23 @@
             } else {
                 return "right"
             }
+        }
+        let ai = {
+            findmove: function() {
+                ai.to = 0
+                ai.from = 0
+                ai.rung(ai.senarios)
+                //find fastest move
+            },
+            from: 0,
+            to: 0,
+            rung: function(a) {
+                let tempboard = board
+                for (let index = 0; index < a; index++) {
+                    tempboard = board
+                }
+            },
+            senarios: 100
         }
     </script>
 </body>
