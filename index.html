@@ -214,7 +214,7 @@
         findmovesfor(1)
         function findmovesfor (p) {
             resetmoves()
-            if (board[p-1].charAt(0) == "w" || board[p-1].charAt(1) == "1") {
+            if (board[p-1].charAt(0) == "w") {
                 if (board[p-10]=="none" && checkx(p-1, p-10) == "left") {
                     avaiblemoves[p-10] = true
                 } else if (!(board[p-10].charAt(0) == board[p-1].charAt(0)) && (board[p-19] == "none") && checkx(p-1, p-19) == "left") {
@@ -226,7 +226,7 @@
                     avaiblemoves[p-15] = true
                 }
             }
-            if (board[p-1].charAt(0) == "b" || board[p-1].charAt(1) == "1") {
+            if (board[p-1].charAt(0) == "b") {
                 if (board[p+8]=="none" && checkx(p-1, p+8) == "right") {
                     avaiblemoves[p+8] = true
                 } else if (!(board[p+8].charAt(0) == board[p-1].charAt(0)) && (board[p+17] == "none") && checkx(p-1, p+17) == "right") {
@@ -236,6 +236,29 @@
                     avaiblemoves[p+6] = true
                 } else if (!(board[p+6].charAt(0) == board[p-1].charAt(0)) && (board[p+13] == "none") && checkx(p-1, p+13) == "left") {
                     avaiblemoves[p+13] = true
+                }
+            }
+            if (board[p-1].charAt(1) == "1") {
+                alert(board[p-1].charAt(1))
+                if (board[p+8]=="none" && checkx(p-1, p+8) == "right") {
+                    avaiblemoves[p+8] = true
+                } else if (!(board[p+8].charAt(0) == board[p-1].charAt(0)) && (board[p+17] == "none") && checkx(p-1, p+17) == "right") {
+                    avaiblemoves[p+17] = true
+                }
+                if (board[p+6]=="none" && checkx(p-1, p+6) == "left") {
+                    avaiblemoves[p+6] = true
+                } else if (!(board[p+6].charAt(0) == board[p-1].charAt(0)) && (board[p+13] == "none") && checkx(p-1, p+13) == "left") {
+                    avaiblemoves[p+13] = true
+                }
+                if (board[p-10]=="none" && checkx(p-1, p-10) == "left") {
+                    avaiblemoves[p-10] = true
+                } else if (!(board[p-10].charAt(0) == board[p-1].charAt(0)) && (board[p-19] == "none") && checkx(p-1, p-19) == "left") {
+                    avaiblemoves[p-19] = true
+                }
+                if (board[p-8]=="none" && checkx(p-1, p-8) == "right") {
+                    avaiblemoves[p-8] = true
+                } else if (!(board[p-8].charAt(0) == board[p-1].charAt(0)) && (board[p-15] == "none") && checkx(p-1, p-15) == "right") {
+                    avaiblemoves[p-15] = true
                 }
             }
         }
@@ -262,10 +285,10 @@
                 }
             }
         }
-        //c text
+        //c text t true/false
         let moveto
         let movefrom
-        function makerndmmove (c) {
+        function makerndmmove (c, t) {
             //c = "w"
             let peicewhite = []
             let peiceblack = []
@@ -298,10 +321,12 @@
                     }
                 }
             }
-            if (/*!(whitemoves.includes(true))*/whitemoves.length == 0 && c == "w") {
+            if (!(whitemoves.length == 0) && c == "w") {
+                alert("err")
                 makerndmmove("w")
                 return "ERR"
-            } else if (/*!(blackmoves.includes(true))*/blackmoves.length == 0 && c == "b") {
+            } else if (!(blackmoves.length == 0) && c == "b") {
+                alert("err")
                 makerndmmove("b")
                 return "ERR"
             }
@@ -314,12 +339,14 @@
                 moveto = randm
                 movefrom = selectedpeice-1
             }
-            movepeice(moveto, movefrom)
+            if (t) {
+                movepeice(moveto, movefrom)
+            }
             resetmoves()
         }
         setInterval(updateboard, 5)
-        setInterval(makerandommoves, 100)
-        for (let index = 0; index < 50; index++) {
+        //setInterval(makerandommoves, 0)
+        for (let index = 0; index < 0; index++) {
             makerandommoves()
         }
         let winner = ""
@@ -357,8 +384,8 @@
             }*/
         }
         function makerandommoves () {
-            makerndmmove("w")
-            makerndmmove("b") 
+            makerndmmove("w", true)
+            makerndmmove("b", true) 
         }
         //p index
         function calcxy (p) {
@@ -389,6 +416,7 @@
                 let tempboard = board
                 for (let index = 0; index < a; index++) {
                     tempboard = board
+                    makerndmmove("w", false)
                 }
             },
             senarios: 100
